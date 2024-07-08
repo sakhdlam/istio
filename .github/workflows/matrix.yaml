@@ -2,7 +2,7 @@ name: build
 on: push
 jobs:
   job1:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -10,7 +10,7 @@ jobs:
         run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
   job2:
     needs: job1
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     strategy:
       matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
