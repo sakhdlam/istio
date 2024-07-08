@@ -10,13 +10,14 @@ on:
             [
               {
                 "cluster-name": "cluster-eks-dev-default",
-                "env-file": "\.github\/variables\/dev\.env"
+                "env-file": ".github/variables/dev.env"
               },
               {
                 "cluster-name": "cluster-eks-dev-aut",
-                "env-file": "\.github\/variables\/dev-aut\.env"
+                "env-file": ".github/variables/dev-aut.env"
               }
             ]
+
 jobs:
   process-json:
     runs-on: [self-hosted, linux, ARM64]
@@ -25,7 +26,10 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Capture cluster-metadata
-      run: printf "CLUSTER_METADATA='${{ inputs.cluster-metadata }}'" >> $GITHUB_ENV
+      run: |
+        # Properly escape the input JSON
+        json_string="${{ inputs.cluster-metadata }}"
+        echo "CLUSTER_METADATA=$(echo "$json_string" | jq -R -s '.' | sed 's/\\\"/\"/g')" >> $GITHUB_ENV
 
     - name: Run script
       shell: bash
