@@ -8,14 +8,14 @@ on:
           required: true
           default: |
             [
-                {
-                  "name": ".github/variables/dev.env",
-                  "age": 30
-                },
-                {
-                  "name": "Bob",
-                  "age": 25
-                }
+              {
+                "cluster-name": "cluster-eks-dev-default",
+                "env-file": ".github/variables/dev.env"
+              },
+              {
+                "cluster-name": "cluster-eks-dev-aut",
+                "env-file": ".github/variables/dev-aut.env"
+              }
             ]
 jobs:
   process-json:
