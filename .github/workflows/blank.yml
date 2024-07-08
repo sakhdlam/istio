@@ -8,7 +8,7 @@ env:
 
 jobs:
   greeting_job:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     env:
       Greeting: Hello
     steps:
@@ -17,7 +17,7 @@ jobs:
         env:
           First_Name: Mona
   greeting_job2:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     env:
       Greeting2: Hello
       AY_OF_WEEK: Tuesday
