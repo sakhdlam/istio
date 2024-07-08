@@ -1,4 +1,4 @@
-name: Example Workflow
+name: Another Example Workflow
 
 on: 
     workflow_dispatch:
