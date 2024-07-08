@@ -38,4 +38,4 @@ jobs:
         
         # You can now use the JSON string in your script
         # For example, you could parse it with jq if needed
-        echo "$cluster_metadata" | jq '.'
+        # echo "$cluster_metadata" | jq '.'
