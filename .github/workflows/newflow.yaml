@@ -7,16 +7,16 @@ on:
           description: 'List of structs in JSON format'
           required: true
           default: |
-            [{
-                "cluster-name": "cluster-eks-dev-default",
-                "env-file": "sakhile"
-              },
-              {
-                "cluster-name": "cluster-eks-dev-aut",
-                "env-file": "dlamini"
-              }
-            ]
-
+            [
+            {
+              "name": "Alice \"The Great\"",
+              "age": 30
+            },
+            {
+              "name": "Bob",
+              "age": 25
+            }
+          ]
 jobs:
   process-json:
     runs-on: [self-hosted, linux, ARM64]
