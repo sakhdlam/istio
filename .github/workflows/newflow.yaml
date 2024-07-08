@@ -27,7 +27,7 @@ jobs:
       
     - name: Capture cluster-metadata
       run: |
-        json_string="${{ toJson(inputs.cluster-metadata) }}"
+        json_string=${{ toJson(inputs.cluster-metadata) }}
         echo "CLUSTER_METADATA=${json_string}" >> $GITHUB_ENV
 
     - name: Run script
