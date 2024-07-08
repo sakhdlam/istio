@@ -3,7 +3,7 @@ name: Another Example Workflow
 on: 
     workflow_dispatch:
       inputs:
-        structs:  
+        cluster-metadata:  
           description: 'List of structs in JSON format'
           required: true
           default: |
