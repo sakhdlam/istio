@@ -1,1 +1,60 @@
 
+name: Another Example Workflow
+
+on: 
+  workflow_dispatch:
+    inputs:
+      cluster-metadata:  
+        description: 'List of structs in JSON format'
+        required: true
+        default: |
+          [
+            {
+              "cluster-name": "cluster-eks-dev-default",
+              "env-file": ".github/variables/dev.env"
+            },
+            {
+              "cluster-name": "cluster-eks-dev-aut",
+              "env-file": ".github/variables/dev-aut.env"
+            }
+          ]
+
+jobs:
+  process-json:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: pip install jq  # Install jq if you want to use it within Python
+
+    - name: Capture cluster-metadata
+      run: echo "CLUSTER_METADATA=${{ toJson(inputs.cluster-metadata) }}" >> $GITHUB_ENV
+
+    - name: Process JSON with Python
+      env:
+        CLUSTER_METADATA: ${{ env.CLUSTER_METADATA }}
+      run: |
+        python -c "
+import os
+import json
+
+cluster_metadata = os.getenv('CLUSTER_METADATA')
+
+if cluster_metadata:
+    clusters = json.loads(cluster_metadata)
+    for cluster in clusters:
+        cluster_name = cluster.get('cluster-name')
+        env_file = cluster.get('env-file')
+        print(f'Cluster Name: {cluster_name}')
+        print(f'Env File: {env_file}')
+else:
+    print('No cluster metadata found.')
+        "
