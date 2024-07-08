@@ -27,6 +27,7 @@ jobs:
         id: set-output
         run: 
           mat=${{ env.MATRIX }}
+          echo "matrix:::dfddfdfd ${{ env.MATRIX }}"
           echo "matrix={'include':$mat}" >> $GITHUB_OUTPUT
 
   run-jobs:
