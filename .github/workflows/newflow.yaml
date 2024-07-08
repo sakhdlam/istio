@@ -1,0 +1,32 @@
+name: Example Workflow
+
+on: [push]
+
+jobs:
+  deploy-dev:
+    uses: neon/engenharia.project-canary/.github/workflows/mesh-common-workflow.yaml@feature-vault
+    with:
+      cluster-metadata: |
+        [
+          {
+            "cluster-name": "cluster-eks-dev-default",
+            "env-file": ".github/variables/dev.env"
+          },
+          {
+            "cluster-name": "cluster-eks-dev-aut",
+            "env-file": ".github/variables/dev-aut.env"
+          }
+        ]
+
+  process-json:
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Capture cluster-metadata
+      run: echo "CLUSTER_METADATA=${{ needs.deploy-dev.outputs.cluster-metadata }}" >> $GITHUB_ENV
+
+    - name: Run script
+      run: ./test.sh
