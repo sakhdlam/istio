@@ -6,7 +6,7 @@ on:
       structs:
         description: 'List of structs in JSON format'
         required: true
-        default: '[{"name":"Alice", "age":30}, {"name":"Bob", "age":25}]'
+        default: '[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
 
 jobs:
   prepare-matrix:
@@ -20,15 +20,7 @@ jobs:
           echo "Parsing structs input..."
           echo '${{ github.event.inputs.structs }}' | jq -c '.' > structs.json
           MATRIX=$(cat structs.json)
-          echo "MATRIX=$MATRIX" >> $GITHUB_ENV
-        env:
-          GITHUB_ENV: ${{ github.env }}
-      - name: Set output
-        id: set-output
-        run: 
-          mat=${{ env.MATRIX }}
-          echo "matrix:::dfddfdfd ${{ env.MATRIX }}"
-          echo "matrix={'include':$mat}" >> $GITHUB_OUTPUT
+          printf 'matrix=%s\n' "${MATRIX}" >> $GITHUB_OUTPUT
 
   run-jobs:
     needs: prepare-matrix
