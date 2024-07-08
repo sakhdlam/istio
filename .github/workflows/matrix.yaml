@@ -10,7 +10,7 @@ on:
 
 jobs:
   prepare-matrix:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -29,7 +29,7 @@ jobs:
 
   run-jobs:
     needs: prepare-matrix
-    runs-on: ubuntu-latest
+    runs-on:  [self-hosted, linux, ARM64]
     strategy:
       matrix:
         struct: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
