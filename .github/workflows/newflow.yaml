@@ -43,3 +43,10 @@ jobs:
         # You can now use the JSON string in your script
         # For example, you could parse it with jq if needed
         echo "$cluster_metadata" | jq '.'
+
+        echo "$cluster-metadata" | jq -c '.[]' | while read -r cluster; do
+            cluster_name=$(echo "$cluster" | jq -r '.["cluster-name"]')
+            # env_file=$(echo "$cluster" | jq -r '.["env-file"]')
+            echo "Cluster Name: $cluster_name"
+            echo "Env File: $env_file"
+        done
