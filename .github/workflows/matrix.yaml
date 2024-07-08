@@ -1,39 +1,24 @@
-name: Example Workflow
-
+name: Test Github Actions Dynamic Matrix
 on:
   workflow_dispatch:
-    inputs:
-      structs:
-        description: 'List of structs in JSON format'
-        required: true
-        default: '[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
-
+  
 jobs:
-  prepare-matrix:
+  setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.matrix.outputs.value }}
     steps:
-      - name: Set matrix from structs
-        id: set-matrix
+      - id: matrix
         run: |
-          echo "Parsing structs input..."
-          echo '${{ github.event.inputs.structs }}' | jq -c '.[]' > structs.json
-          echo "MATRIX=$(jq -c -n '[inputs]' structs.json)" >> $GITHUB_ENV
-        env:
-          GITHUB_ENV: ${{ github.env }}
-      - name: Set output
-        id: set-output
-        run: echo "::set-output name=matrix::${{ env.MATRIX }}"
-
-  run-jobs:
-    needs: prepare-matrix
+          echo "value=[\"a\", \"b\", \"c\"]" >> $GITHUB_OUTPUT
+      - run: |
+          echo "${{ steps.matrix.outputs.value }}"
+  build:
+    needs: [ setup ]
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      matrix:
+        value: ${{fromJSON(needs.setup.outputs.matrix)}}
     steps:
-      - name: Run job for each entry
-        run: |
-          echo "Running job for name: ${{ matrix.name }} and age: ${{ matrix.age }}"
-          # Your actual job logic here
-          echo "Name: ${{ matrix.name }}, Age: ${{ matrix.age }}"
+      - run: |
+          echo "${{ matrix.value }}"
