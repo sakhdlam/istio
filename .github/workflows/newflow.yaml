@@ -9,11 +9,11 @@ on:
           default: |
             [{
                 "cluster-name": "cluster-eks-dev-default",
-                "env-file": "\.github\/variables\/dev\.env"
+                "env-file": "sakhile"
               },
               {
                 "cluster-name": "cluster-eks-dev-aut",
-                "env-file": "\.github\/variables\/dev-aut\.env"
+                "env-file": "dlamini"
               }
             ]
 
