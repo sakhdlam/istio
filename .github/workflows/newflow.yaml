@@ -9,7 +9,7 @@ on:
           default: |
             [
                 {
-                  "name": "Alice \"The Great\"",
+                  "name": ".github/variables/dev.env",
                   "age": 30
                 },
                 {
