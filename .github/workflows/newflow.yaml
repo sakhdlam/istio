@@ -8,15 +8,15 @@ on:
           required: true
           default: |
             [
-            {
-              "name": "Alice \"The Great\"",
-              "age": 30
-            },
-            {
-              "name": "Bob",
-              "age": 25
-            }
-          ]
+                {
+                  "name": "Alice \"The Great\"",
+                  "age": 30
+                },
+                {
+                  "name": "Bob",
+                  "age": 25
+                }
+            ]
 jobs:
   process-json:
     runs-on: [self-hosted, linux, ARM64]
