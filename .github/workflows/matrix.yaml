@@ -1,41 +1,17 @@
-name: Example Workflow
-
-on:
-  workflow_dispatch:
-    inputs:
-      structs:
-        description: 'List of structs in JSON format'
-        required: true
-        default: '[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
-
+name: build
+on: push
 jobs:
-  prepare-matrix:
-    runs-on: [self-hosted, linux, ARM64]
+  job1:
+    runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Set matrix from structs
-        id: set-matrix
-        run: |
-          echo "Parsing structs input..."
-          echo '${{ github.event.inputs.structs }}' | jq -c '.' > structs.json
-          MATRIX=$(cat structs.json)
-          echo "MATRIX=$MATRIX" >> $GITHUB_ENV
-        env:
-          GITHUB_ENV: ${{ github.env }}
-      - name: Set output
-        id: set-output
-        run: echo "::set-output name=matrix::${{ env.MATRIX }}"
-
-  run-jobs:
-    needs: prepare-matrix
-    runs-on:  [self-hosted, linux, ARM64]
+      - id: set-matrix
+        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
     strategy:
-      matrix:
-        struct: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
-      - name: Run job for each entry
-        run: |
-          echo "Running job for name: ${{ matrix.struct.name }} and age: ${{ matrix.struct.age }}"
-          # Your actual job logic here
-          echo "Name: ${{ matrix.struct.name }}, Age: ${{ matrix.struct.age }}"
+      - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
