@@ -5,7 +5,7 @@ on:
 
 jobs:
   define-matrix:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
 
     outputs:
       colors: ${{ steps.colors.outputs.colors }}
@@ -17,7 +17,7 @@ jobs:
           echo 'colors=["red", "green", "blue"]' >> "$GITHUB_OUTPUT"
 
   produce-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     needs: define-matrix
     strategy:
       matrix:
@@ -36,7 +36,7 @@ jobs:
           path: color
 
   consume-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     needs:
     - define-matrix
     - produce-artifacts
