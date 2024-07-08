@@ -1,54 +1,43 @@
-name: shared matrix
+name: Example Workflow
+
 on:
   workflow_dispatch:
+    inputs:
+      structs:
+        description: 'List of structs in JSON format'
+        required: true
+        default: '[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
 
 jobs:
-  define-matrix:
-    runs-on: [self-hosted, linux, ARM64]
-
+  prepare-matrix:
+    runs-on: ubuntu-latest
     outputs:
-      colors: ${{ steps.colors.outputs.colors }}
-
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Define Colors
-        id: colors
+      - name: Set matrix from structs
+        id: set-matrix
         run: |
-          echo 'colors=["red", "green", "blue"]' >> "$GITHUB_OUTPUT"
-
-  produce-artifacts:
-    runs-on: [self-hosted, linux, ARM64]
-    needs: define-matrix
-    strategy:
-      matrix:
-        color: ${{ fromJSON(needs.define-matrix.outputs.colors) }}
-
-    steps:
-      - name: Define Color
+          echo "Parsing structs input..."
+          echo '${{ github.event.inputs.structs }}' | jq -c '.' > structs.json
+          MATRIX=$(cat structs.json)
+          echo "MATRIX=$MATRIX" >> $GITHUB_ENV
         env:
-          color: ${{ matrix.color }}
-        run: |
-          echo "$color" > color
-      - name: Produce Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.color }}
-          path: color
+          GITHUB_ENV: ${{ github.env }}
+      - name: Set output
+        id: set-output
+        run: 
+          mat= ${{ env.MATRIX }}
+          echo "matrix={'include':$mat}" >> $GITHUB_OUTPUT
 
-  consume-artifacts:
-    runs-on: [self-hosted, linux, ARM64]
-    needs:
-    - define-matrix
-    - produce-artifacts
+  run-jobs:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        color: ${{ fromJSON(needs.define-matrix.outputs.colors) }}
-
+        struct: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
     steps:
-    - name: Retrieve Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.color }}
-
-    - name: Report Color
-      run: |
-        cat color
+      - name: Run job for each entry
+        run: |
+          echo "Running job for name: ${{ matrix.struct.name }} and age: ${{ matrix.struct.age }}"
+          # Your actual job logic here
+          echo "Name: ${{ matrix.struct.name }}, Age: ${{ matrix.struct.age }}"
