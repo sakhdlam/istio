@@ -32,7 +32,7 @@ jobs:
     runs-on:  [self-hosted, linux, ARM64]
     strategy:
       matrix:
-        struct: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+        struct: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
     steps:
       - name: Run job for each entry
         run: |
