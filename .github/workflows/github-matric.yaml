@@ -6,7 +6,7 @@ on:
       structs:
         description: 'List of structs in JSON format'
         required: true
-        default: '[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
+        default: '[{"name":"Alice", "age":30}, {"name":"Bob", "age":25}]'
 
 jobs:
   prepare-matrix:
