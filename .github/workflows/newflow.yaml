@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Capture cluster-metadata
-      run: echo "CLUSTER_METADATA='${{ inputs.cluster-metadata }}'" >> $GITHUB_ENV
+      run: printf "CLUSTER_METADATA='${{ inputs.cluster-metadata }}'" >> $GITHUB_ENV
 
     - name: Run script
       shell: bash
