@@ -40,7 +40,8 @@ jobs:
 
     - name: Process JSON with Python
       env:
-        CLUSTER_METADATA: ${{ env.CLUSTER_METADATA }}
+        CLUSTER_METADATA: ${{ inputs.cluster-metadata }}
+      #   CLUSTER_METADATA: ${{ env.CLUSTER_METADATA }}
       run: |
         python -c "
         import os
