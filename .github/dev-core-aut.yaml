@@ -1,0 +1,18 @@
+name: Dev mesh Workflow
+on:
+  workflow_dispatch:
+jobs:
+  deploy-dev:
+    uses: neon/engenharia.project-canary/.github/workflows/mesh-common-workflow.yaml@feature-vault
+    with:
+      cluster-metadata: |
+        [
+          {
+            "cluster-name": "cluster-eks-dev-default",
+            "env-file": ".github/variables/dev.env"
+          },
+          {
+            "cluster-name": "cluster-eks-dev-aut",
+            "env-file": ".github/variables/dev-aut.env"
+          }
+        ]
