@@ -1,6 +1,10 @@
 name: Istio mesh Setup
 on:
   workflow_call:
+    inputs:
+      cluster-metadata:
+        type: string
+        description: cluster-metadata
 
 jobs:
   setup-pki:
