@@ -14,7 +14,7 @@ runs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.9.19'
+        python-version: '3.11.3'
 
     - name: Process JSON with Pcert-manager-cainjector-6b9f7767b7-pffqvython
       shell: python
