@@ -10,6 +10,6 @@ jobs:
       - name: My first step - check out repository
         uses: actions/checkout@v2
       - name: Setup mesh
-        uses: sakhdlam/istio/vaultcerts@feature-vault
+        uses: sakhdlam/istio/vaultcerts@main
         with:
           cluster-metadata: ${{ inputs.cluster-metadata }}
