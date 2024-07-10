@@ -14,10 +14,13 @@ runs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8.10'
-
+        python-version: '3.10.6'
+    - name: Install dependencies
+        run: pip install hvac
     - name: Process JSON with Pcert-manager-cainjector-6b9f7767b7-pffqvython
       shell: bash
       env:
         CLUSTER_METADATA: ${{ inputs.cluster-metadata }}
-      run: python enable-vault-pki.py
+      run: python enable-vault-pki.py 
+
+
