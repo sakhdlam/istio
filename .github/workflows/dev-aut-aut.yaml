@@ -4,7 +4,7 @@ on:
 
 jobs:
   deploy-dev:
-    uses: neon/engenharia.project-canary/.github/workflows/mesh-common-workflow.yaml@feature-vault
+    uses: sakhdlam/istio//.github/workflows/mesh-common-workflow.yaml@main
     with:
       cluster-metadata: |
         [
