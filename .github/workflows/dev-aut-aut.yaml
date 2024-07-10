@@ -4,7 +4,7 @@ on:
 
 jobs:
   deploy-dev:
-    uses: sakhdlam/istio//.github/workflows/mesh-common-workflow.yaml@main
+    uses: sakhdlam/istio/.github/workflows/mesh-common-workflow.yaml@main
     with:
       cluster-metadata: |
         [
