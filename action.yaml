@@ -17,7 +17,7 @@ runs:
     #     python-version: '3.11.9'
 
     - name: Process JSON with Pcert-manager-cainjector-6b9f7767b7-pffqvython
-      shell: python
+      shell: bash
       env:
         CLUSTER_METADATA: ${{ inputs.cluster-metadata }}
       run: python enable-vault-pki.py
