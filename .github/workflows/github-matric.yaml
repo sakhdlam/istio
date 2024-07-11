@@ -22,7 +22,7 @@ jobs:
   prepare-matrix:
     runs-on: [self-hosted, linux, ARM64]
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      my-matrix: ${{ steps.set-matrix.outputs.my-matrix }}
     steps:
       - name: Set matrix from structs
         id: set-matrix
@@ -30,14 +30,14 @@ jobs:
           echo "Parsing structs input..."
           echo '${{ github.event.inputs.structs }}' | jq -c '.' > structs.json
           MATRIX=$(cat structs.json)
-          printf 'matrix=%s\n' "${MATRIX}" >> $GITHUB_OUTPUT
+          printf 'my-matrix=%s\n' "${MATRIX}" >> $GITHUB_OUTPUT
 
   run-jobs:
     needs: prepare-matrix
     runs-on: [self-hosted, linux, ARM64]
     strategy:
       matrix:
-        struct: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+        struct: ${{ fromJson(needs.prepare-matrix.outputs.my-matrix) }}
     steps:
       - name: Run job for each entry
         run: |
