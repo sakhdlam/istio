@@ -20,7 +20,7 @@ on:
 
 jobs:
   prepare-matrix:
-    runs-on: ubuntu-lastest
+    runs-on: [self-hosted, linux, ARM64]
     outputs:
       my-matrix: ${{ steps.set-matrix.outputs.my-matrix }}
     steps:
@@ -34,7 +34,7 @@ jobs:
 
   run-jobs:
     needs: prepare-matrix
-    runs-on: ubuntu-lastest
+    runs-on: [self-hosted, linux, ARM64]
     strategy:
       matrix:
         struct: ${{ fromJson(needs.prepare-matrix.outputs.my-matrix) }}
