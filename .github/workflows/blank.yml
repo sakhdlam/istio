@@ -27,6 +27,7 @@ jobs:
           OUTPUT2: ${{needs.job1.outputs.output2}}
         run: |
           echo "$OUTPUT1 $OUTPUT2"
+          pwd
           cat ./variables.env >> $GITHUB_ENV
           envsubst "$(env | sed -e 's/=.*//' -e 's/^/\$/g')" < "./cert-manager.yaml" > "./cert-manager.yaml.final"
           cat cert-manager.yaml.final
