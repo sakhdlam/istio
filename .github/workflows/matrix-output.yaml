@@ -10,8 +10,8 @@ jobs:
     runs-on: [self-hosted, linux, ARM64]
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        node: [12]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [12, 14, 16]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,6 +22,7 @@ jobs:
           echo "Running on OS: ${{ matrix.os }} and Node.js: ${{ matrix.node }}"
           # Simulating a result based on the matrix combination
           RESULT="${{ matrix.os }}-${{ matrix.node }}-result"
+          echo "RESULT=$RESULT" >> $GITHUB_ENV
           echo $RESULT > result.txt
 
       - name: Upload result
@@ -40,14 +41,11 @@ jobs:
       - name: Download results
         uses: actions/download-artifact@v2
         with:
-          name: result
           path: results/
 
       - name: Print results
         run: |
           echo "Results from matrix build:"
           for file in results/*; do
-            echo "Result from $file:"
-            cat $file
-            echo ""
+            find . -type f -print -exec cat {} \
           done
