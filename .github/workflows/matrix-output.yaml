@@ -1,7 +1,9 @@
 name: Matrix Build and Collect Results
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,23 +22,30 @@ jobs:
           echo "Running on OS: ${{ matrix.os }} and Node.js: ${{ matrix.node }}"
           # Simulating a result based on the matrix combination
           RESULT="${{ matrix.os }}-${{ matrix.node }}-result"
-          echo "::set-output name=$RESULT=34"
+          echo "RESULT=$RESULT" >> $GITHUB_ENV
+          echo $RESULT > result.txt
 
-      - name: Set output
-        id: set_output
-        run: echo "result=${{ steps.run_script.outputs.result }}" >> $GITHUB_ENV
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: result-${{ matrix.os }}-${{ matrix.node }}
+          path: result.txt
 
   collect-results:
     needs: build
     runs-on: [self-hosted, linux, ARM64]
     steps:
-      - name: Collect results
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download results
+        uses: actions/download-artifact@v2
+        with:
+          path: results/
+
+      - name: Print results
         run: |
           echo "Results from matrix build:"
-          echo "${{ needs.build.outputs.result }}"
-          # for os in ubuntu-latest macos-latest windows-latest; do
-          #   for node in 12 14 16; do
-          #     job_output=$(echo "${{ needs.build.outputs.result }}" | grep "${os}-${node}")
-          #     echo "Result for OS $os and Node.js $node: $job_output"
-          #   done
-          # done
+          for file in results/*; do
+            echo "$(cat $file)"
+          done
