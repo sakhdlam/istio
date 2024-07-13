@@ -33,9 +33,10 @@ jobs:
       - name: Collect results
         run: |
           echo "Results from matrix build:"
-          for os in ubuntu-latest macos-latest windows-latest; do
-            for node in 12 14 16; do
-              job_output=$(echo "${{ needs.build.outputs.result }}" | grep "${os}-${node}")
-              echo "Result for OS $os and Node.js $node: $job_output"
-            done
-          done
+          echo "${{ needs.build.outputs.result }}"
+          # for os in ubuntu-latest macos-latest windows-latest; do
+          #   for node in 12 14 16; do
+          #     job_output=$(echo "${{ needs.build.outputs.result }}" | grep "${os}-${node}")
+          #     echo "Result for OS $os and Node.js $node: $job_output"
+          #   done
+          # done
