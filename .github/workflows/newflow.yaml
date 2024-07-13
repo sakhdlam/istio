@@ -5,7 +5,9 @@ on:
 jobs:
   job1:
     runs-on: [self-hosted, linux, ARM64]
-
+    outputs:
+      result: ${{ steps.export-result.output.result }}
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -15,6 +17,7 @@ jobs:
         uses: sakhdlam/istio@main
 
       - name: Set output for next job
+        id: export-result
         run: echo "result=${{ steps.mycomposite.outputs.result }}" >> $GITHUB_ENV
 
   job2:
