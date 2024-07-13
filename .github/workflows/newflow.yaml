@@ -18,7 +18,7 @@ jobs:
 
       - name: Set output for next job
         id: export-result
-        run: echo "result=${{ steps.mycomposite.outputs.result }}" >> $GITHUB_ENV
+        run: echo "result=${{ steps.mycomposite.outputs.random-number }}" >> $GITHUB_ENV
 
   job2:
     runs-on: [self-hosted, linux, ARM64]
