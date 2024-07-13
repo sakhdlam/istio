@@ -22,7 +22,6 @@ jobs:
           echo "Running on OS: ${{ matrix.os }} and Node.js: ${{ matrix.node }}"
           # Simulating a result based on the matrix combination
           RESULT="${{ matrix.os }}-${{ matrix.node }}-result"
-          echo "RESULT=$RESULT" >> $GITHUB_ENV
           echo $RESULT > result.txt
 
       - name: Upload result
@@ -41,11 +40,14 @@ jobs:
       - name: Download results
         uses: actions/download-artifact@v2
         with:
+          name: result
           path: results/
 
       - name: Print results
         run: |
           echo "Results from matrix build:"
           for file in results/*; do
-            echo "$(cat $file)"
+            echo "Result from $file:"
+            cat $file
+            echo ""
           done
