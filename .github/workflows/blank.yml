@@ -32,7 +32,6 @@ jobs:
             echo "$OUTPUT1 $OUTPUT2"
             pwd
             cat ./variables.env >> $GITHUB_ENV
-            sudo yum -y install jq gettext
             envsubst "$(env | sed -e 's/=.*//' -e 's/^/\$/g')" < "./cert-manager.yaml" > "./cert-manager.yaml.final"
             cat cert-manager.yaml.final
           
