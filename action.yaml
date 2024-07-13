@@ -8,6 +8,7 @@ runs:
   steps:
     - name: Perform some task
       id: task
+      shell: bash
       run: |
         result=$(echo "Hello, World!")
         echo "result=$result" >> $GITHUB_OUTPUT
