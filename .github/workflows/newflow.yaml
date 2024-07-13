@@ -1,49 +1,26 @@
-name: Another Example Workflow
-
-on: 
-    workflow_dispatch:
-      inputs:
-        cluster-metadata:  
-          description: 'List of structs in JSON format'
-          required: true
-          default: |
-            [
-              {
-                "cluster-name": "cluster-eks-dev-default",
-                "env-file": ".github/variables/dev.env"
-              },
-              {
-                "cluster-name": "cluster-eks-dev-aut",
-                "env-file": ".github/variables/dev-aut.env"
-              }
-            ]
+name: Workflow Using Composite Action
+on:
+  workflow_dispatch:
 
 jobs:
-  process-json:
+  job1:
     runs-on: [self-hosted, linux, ARM64]
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Capture cluster-metadata
-      run: |
-        json_string=${{ toJson(inputs.cluster-metadata) }}
-        echo "CLUSTER_METADATA=${json_string}" >> $GITHUB_ENV
 
-    - name: Run script
-      shell: bash
-      run: |
-        # Ensure the environment variable is properly assigned
-        cluster_metadata="$CLUSTER_METADATA"
-        
-        # Print the received metadata for verification
-        echo "$cluster_metadata"
-        
-        # You can now use the JSON string in your script
-        # For example, you could parse it with jq if needed
-        echo "$cluster_metadata" | jq -c '.[]' | while read -r cluster; do
-            cluster_name=$(echo "$cluster" | jq -r '.["cluster-name"]')
-            env_file=$(echo "$cluster" | jq -r '.["env-file"]')
-            echo "Cluster Name: $cluster_name"
-            echo "Env File: $env_file"
-        done
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run composite action
+        id: mycomposite
+        uses: ./.github/actions/my-composite-action
+
+      - name: Set output for next job
+        run: echo "result=${{ steps.mycomposite.outputs.result }}" >> $GITHUB_ENV
+
+  job2:
+    runs-on: [self-hosted, linux, ARM64]
+    needs: job1
+
+    steps:
+      - name: Use composite action output
+        run: echo "The result is ${{ needs.job1.outputs.result }}"
