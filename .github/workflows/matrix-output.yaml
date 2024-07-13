@@ -20,7 +20,7 @@ jobs:
           echo "Running on OS: ${{ matrix.os }} and Node.js: ${{ matrix.node }}"
           # Simulating a result based on the matrix combination
           RESULT="${{ matrix.os }}-${{ matrix.node }}-result"
-          echo "::set-output name=result::$RESULT"
+          echo "::set-output name=$RESULT=34"
 
       - name: Set output
         id: set_output
