@@ -12,7 +12,7 @@ jobs:
 
       - name: Run composite action
         id: mycomposite
-        uses: ./.github/actions/my-composite-action
+        uses: sakhdlam/istio@main
 
       - name: Set output for next job
         run: echo "result=${{ steps.mycomposite.outputs.result }}" >> $GITHUB_ENV
