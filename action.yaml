@@ -3,7 +3,7 @@ description: A composite action that does something
 outputs:
   result:
     description: 'The result of the composite action'
-    value: ${{ steps.task.output.result }}
+    value: ${{ steps.task.outputs.result }}
 runs:
   using: "composite"
   steps:
