@@ -1,26 +1,15 @@
-name: 'Set vault secrets'
-description: 'Set vault secrets'
-author: 'engenharia-neon'
-inputs:
-  cluster-metadata:
-    type: string
-    description: "cluster-metadata"
+name: My Composite Action
+description: A composite action that does something
+outputs:
+  result:
+    description: 'The result of the composite action'
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10.6'
-    # - name: Install dependencies
-    #     run: pip install hvac
-    - name: Process JSON with Pcert-manager-cainjector-6b9f7767b7-pffqvython
-      shell: bash
-      env:
-        CLUSTER_METADATA: ${{ inputs.cluster-metadata }}
-      run: python enable-vault-pki.py 
+    - name: Perform some task
+      id: task
+      run: |
+        result=$(echo "Hello, World!")
+        echo "result=$result" >> $GITHUB_OUTPUT
 
 
