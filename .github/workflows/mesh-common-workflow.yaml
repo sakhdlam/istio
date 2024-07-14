@@ -21,5 +21,6 @@ jobs:
         env:
           ISTIO_VAULT_SIGNIN_SECRET_ID_B64: "secret-id-64"
           ISTIO_VAULT_SIGNIN_ROLE_ID: "role-id"
+          ISTIO_VAULT_PKI_CERT_SIGN_ROLE: "cert-sign-role"
         with:
           cluster-metadata: ${{ inputs.cluster-metadata }}
