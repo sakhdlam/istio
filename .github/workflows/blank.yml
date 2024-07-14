@@ -30,12 +30,8 @@ jobs:
             OUTPUT2: ${{needs.job1.outputs.output2}}
         run: |
             echo "$OUTPUT1 $OUTPUT2"
-            pwd
             cat ./variables.env >> $GITHUB_ENV
-            cat cert-manager.yaml.final
-      - name: user vars
-        run: |
-            sudo apt-get update && sudo apt-get install -y gettext
-            envsubst "$(env | sed -e 's/=.*//' -e 's/^/\$/g')" < "./cert-manager.yaml" > "./cert-manager.yaml.final"
-            cat cert-manager.yaml.final
+            echo "ISTIO_VAULT_SIGNIN_SECRET_ID_B64=secret-id-64" >> $GITHUB_ENV
+            echo "ISTIO_VAULT_SIGNIN_ROLE_ID:role-id"  >> $GITHUB_ENV
+
           
