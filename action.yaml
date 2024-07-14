@@ -25,7 +25,7 @@ runs:
     - name: Istall istio
       shell: bash
       run: |
-          sudo apt-get update && sudo apt-get install -y gettext
+          # sudo apt-get update && sudo apt-get install -y gettext
           envsubst "$(env | sed -e 's/=.*//' -e 's/^/\$/g')" < "./cert-manager.yaml" > "./cert-manager.yaml.final"
           cat cert-manager.yaml.final
 
