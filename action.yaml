@@ -22,5 +22,10 @@ runs:
       id: random-number-generator
       run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
       shell: bash
+    - name: Istall istio
+      run: |
+          sudo apt-get update && sudo apt-get install -y gettext
+          envsubst "$(env | sed -e 's/=.*//' -e 's/^/\$/g')" < "./cert-manager.yaml" > "./cert-manager.yaml.final"
+          cat cert-manager.yaml.final
 
 
