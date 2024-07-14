@@ -5,22 +5,23 @@ metadata:
   name: cert-manager-vault-approle
   namespace: istio-system
 data:
-  secretId: "$SECRET_ID"
+  secretId: $ISTIO_VAULT_SIGNIN_SECRET_ID_B64
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: vault-issuer
+  name: $ISTIO_CERTMANAGER_ISSUER
   namespace: istio-system
 spec:
   vault:
-    path: $ROLE_ID 
-    server: $VAULT_ADDR 
+    path: $ISTIO_VAULT_PKI_CERT_SIGN_ROLE
+    server: $VAULT_ADDR
     auth:
      appRole:
-       path: istio 
-       roleId: $ROLE_ID
+       path: $ISTIO_VAULT_SIGNIN_ROLE_PATH
+       roleId: $ISTIO_VAULT_SIGNIN_ROLE_ID
        secretRef:
          name: cert-manager-vault-approle
          key: secretId
 ---
+
