@@ -13,7 +13,10 @@ jobs:
     runs-on: [self-hosted, linux, ARM64]
     environment: production
     steps:
-    - uses: actions/labeler@v4
-      with:
-        repo-token: ${{ secrets.envPAT }}
-        configuration-path: ${{ inputs.config-path }}
+      - uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.envPAT }}
+          configuration-path: ${{ inputs.config-path }}
+      - name: Install istio
+        uses: sakhdlam/istio@main
+         
