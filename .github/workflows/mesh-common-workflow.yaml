@@ -13,7 +13,12 @@ jobs:
        # This step checks out a copy of your repository.
       - name: My first step - check out repository
         uses: actions/checkout@v2
+      - name: Checkout local vars
+        run: cat ./variables.env >> $GITHUB_ENV
       - name: Setup mesh
         uses: sakhdlam/istio@main
+        env:
+          ISTIO_VAULT_SIGNIN_SECRET_ID_B64: "secret-id-64"
+          ISTIO_VAULT_SIGNIN_ROLE_ID: "role-id"
         with:
           cluster-metadata: ${{ inputs.cluster-metadata }}
