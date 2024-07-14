@@ -14,6 +14,7 @@ jobs:
       - name: My first step - check out repository
         uses: actions/checkout@v2
       - name: Checkout local vars
+        shell: bash
         run: cat ./variables.env >> $GITHUB_ENV
       - name: Setup mesh
         uses: sakhdlam/istio@main
