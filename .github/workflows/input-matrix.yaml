@@ -19,9 +19,10 @@ on:
           ]
 
 jobs:
-  runs-on: [elastic-runner-dev]
+  process-input:
+    runs-on: [self-hosted, linux, ARM64]
     strategy:
-      matrix: ${{ fromJSON(inputs.cluster-metadata) }}
+        matrix: ${{ fromJSON(inputs.cluster-metadata) }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
