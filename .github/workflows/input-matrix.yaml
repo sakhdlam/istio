@@ -1,0 +1,31 @@
+
+name: Test matrix with input
+
+on: 
+  workflow_dispatch:
+    inputs:
+      cluster-metadata:  
+        description: 'List of structs in JSON format'
+        required: true
+        default: |
+          [
+            {
+              "cluster-name": "cluster-eks-dev-default",
+              "env-file": ".github/variables/dev.env"
+            },
+            {
+              "cluster-name": "cluster-eks-dev-aut",
+              "env-file": ".github/variables/dev-aut.env"
+            }
+          ]
+
+jobs:
+  runs-on: [elastic-runner-dev]
+    strategy:
+      matrix: ${{ fromJSON(inputs.cluster-metadata) }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Populate cluster local variables
+        run: |
+          cat ${{ matrix.env-file }} >> $GITHUB_ENV
