@@ -20,12 +20,13 @@ on:
 
 jobs:
   process-input:
-    runs-on: [self-hosted, linux, ARM64]
+    runs-on: self-hosted
     strategy:
-        matrix: ${{ fromJSON(inputs.cluster-metadata) }}
+      matrix:
+        cluster-metadata: ${{ fromJSON(inputs.cluster-metadata) }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Populate cluster local variables
         run: |
-          cat ${{ matrix.env-file }} >> $GITHUB_ENV
+          cat ${{ matrix.cluster-metadata.env-file }} >> $GITHUB_ENV
